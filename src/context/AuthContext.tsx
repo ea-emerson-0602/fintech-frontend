@@ -1,27 +1,33 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
-interface User {
-  id: string;
-  fullName: string;
-  email: string;
+interface AuthContextType {
+  user: any;
+  setUser: (user: any) => void;
 }
 
-interface AuthContextProps {
-  user: User | null;
-  setUser: (user: User | null) => void;
-}
-
-export const AuthContext = createContext<AuthContextProps>({
+export const AuthContext = createContext<AuthContextType>({
   user: null,
   setUser: () => {},
 });
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<any>(null);
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
-  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;
+  const updateUser = (userData: any) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, setUser: updateUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
