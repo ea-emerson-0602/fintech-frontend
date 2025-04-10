@@ -20,7 +20,7 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
     amount: 0,
     paymentMethod: "bank",
   };
-  const [step, setStep] = useState(1);
+  const [, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 

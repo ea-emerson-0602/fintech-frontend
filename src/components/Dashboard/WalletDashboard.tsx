@@ -31,7 +31,7 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
   const [showModal, setShowModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
-  const [status, setStatus] = useState("");
+  const [, setStatus] = useState("");
   const navigate = useNavigate();
 
   const pendingAmount = 0;
@@ -72,7 +72,7 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
     };
 
     checkAuth();
-  }, []);
+  }, [navigate]);
 
   const fetchBalance = useCallback(async () => {
     try {
