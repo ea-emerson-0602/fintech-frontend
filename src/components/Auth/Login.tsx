@@ -67,6 +67,7 @@ const Login: React.FC = () => {
                   <div className="text-red-500 text-sm mt-1">
                     {(errors as any).general}
                   </div>
+                  
                 )}
                 <div className="lg:mb-8 mb-4">
                   <label
