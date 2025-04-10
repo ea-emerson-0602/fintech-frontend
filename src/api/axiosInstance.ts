@@ -1,20 +1,16 @@
 import axios from 'axios';
 
+// axiosInstance.js
+
+// Add request interceptor for token
+// Axios interceptor for auth
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
+  withCredentials: true, // ✅ important for sending/receiving cookies
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Optional: add interceptors for adding tokens, logging, error handling etc.
-axiosInstance.interceptors.request.use((config) => {
-  // Example: if you store a token in localStorage
-  const token = localStorage.getItem('token');
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
 
 export default axiosInstance;

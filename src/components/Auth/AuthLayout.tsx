@@ -8,22 +8,23 @@ interface AuthLayoutProps {
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ title, children }) => {
   return (
-    <div className="flex h-screen">
-      <div className="hidden md:block w-fit">
-        <img
-          src={sideImage}
-          alt="Auth"
-          className="w-full h-full object-cover"
-        />
-      </div>
+    <div className="flex h-screen w-full">
+  {/* Image column - hidden on mobile */}
+  <div className="hidden md:block w-fit">
+    <img
+      src={sideImage}
+      alt="Auth"
+      className="w-full h-full object-cover"
+    />
+  </div>
 
-      <div className="flex w-full md:w-1/2 items-center justify-center p-8">
+  {/* Form column - full width on mobile */}
+  <div className="flex w-full md:w-1/2 items-center justify-center p-4 sm:p-6 md:p-8">
         <div className="w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center">{title}</h2>
           {children}
         </div>
       </div>
-    </div>
+</div>
   );
 };
 

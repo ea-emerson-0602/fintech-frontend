@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 import AuthLayout from "./AuthLayout";
+import axios from "axios";
 
 interface LoginValues {
   email: string;
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
   const { setUser } = useContext(AuthContext);
   const initialValues: LoginValues = { email: "", password: "" };
   const [showPassword, setShowPassword] = useState(false);
+  const [, setStatus] = useState("");
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -26,27 +28,21 @@ const Login: React.FC = () => {
   });
 
   const handleSubmit = async (
-    values: LoginValues,
+    values: any,
     { setSubmitting, setErrors }: any
   ) => {
     try {
       const response = await axiosInstance.post("/auth/login", values);
-      console.log(response); // Log the entire response
+      const { user_details } = response.data;
 
-      const { token } = response.data;
-      const { user } = response.data;
-      if (token) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("email", user.email);
-        localStorage.setItem("name", user.name)
-        setUser({ email: values.email }); // Assuming the user email is part of the login form
-        navigate("/dashboard");
+      setUser({ email: user_details.email }); // No need to store token
+      navigate("/dashboard");
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        setStatus(error.response.data?.message || "Login failed");
       } else {
-        throw new Error("Invalid response structure");
+        setStatus("Login failed");
       }
-    } catch (error: any) {
-      console.error("Login error:", error);
-      setErrors({ general: error.response?.data?.message || "Login failed" });
     } finally {
       setSubmitting(false);
     }
@@ -54,10 +50,10 @@ const Login: React.FC = () => {
 
   return (
     <AuthLayout title="Login">
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="bg-white p-8 rounded-2xl w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6">Sign in to Beam.</h2>
-          <p className="text-sm my-6">
+      <div className="lg:min-h-screen h-screen flex items-center justify-center px-4">
+        <div className="bg-white lg:p-8 rounded-2xl w-full max-w-md">
+          <h2 className="text-2xl font-bold lg:mb-6">Sign in to Beam.</h2>
+          <p className="text-sm my-4 lg:my-6">
             Please sign in with your assigned login details
           </p>
           <Formik
@@ -67,12 +63,15 @@ const Login: React.FC = () => {
           >
             {({ isSubmitting, errors, values }) => (
               <Form className="">
-                {/* {errors.general && <div className="text-red-500 text-sm">{errors.general}</div>} */}
-
-                <div>
+                {(errors as any).general && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {(errors as any).general}
+                  </div>
+                )}-
+                <div className="lg:mb-8 mb-4">
                   <label
                     htmlFor="email"
-                    className="block text-sm mb4 font-medium text-gray-500"
+                    className="block text-sm  font-medium text-gray-500"
                   >
                     Email Address
                   </label>
@@ -80,16 +79,16 @@ const Login: React.FC = () => {
                     name="email"
                     type="email"
                     placeholder="you@example.com"
-                    className="w-full mt-1 px-3 mb-8 py-2 border text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white"
+                    className="w-full px-3 py-2 border text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white"
                   />
                   <ErrorMessage
                     name="email"
                     component="div"
-                    className="text-red-500 text-sm"
+                    className="text-red-500 text-sm  "
                   />
                 </div>
 
-                <div>
+                <div className="lg:mb-8 mb-4">
                   <label
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-500"
@@ -100,7 +99,7 @@ const Login: React.FC = () => {
                     <Field
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      className="w-full mt-1 px-3 py-2 text-black border rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-black pr-10"
+                      className="w-full px-3 py-2 border text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white"
                     />
                     <button
                       type="button"
@@ -120,7 +119,7 @@ const Login: React.FC = () => {
                 <div className="flex mt-3 text-xs mb-6 text-gray-700  justify-between w-full">
                   <div className="flex justify-between w-full">
                     <p className="">
-                      Done have an account?{" "}
+                      Don&apos;t have an account?{" "}
                       <Link
                         to="/register"
                         className="text-blue-600 hover:underline"

@@ -14,69 +14,83 @@ import {
   Bell,
   Moon,
   Sun,
+  Wallet,
 } from "lucide-react";
-import LogoutButton from "./LogoutButton"; // Import your LogOutButton component
+import LogoutButton from "./LogoutButton";
 
 const navItems = [
-  { name: "Overview", icon: <BarChart size={18}/> },
-  { name: "Customers", icon: <UsersRound size={18}/> },
-  { name: "Spot Orders", icon: <Presentation size={18}/> },
-  { name: "Margin Orders", icon: <MonitorCheck size={18}/> },
-  { name: "Transactions", icon: <ArrowRightLeft size={18}/> },
-  { name: "Wallet", icon: <ArrowRightLeft size={18}/>, highlight: true },
+  { name: "Overview", icon: <BarChart size={20} /> },
+  { name: "Customers", icon: <UsersRound size={20} /> },
+  { name: "Spot-orders", icon: <Presentation size={20} /> },
+  { name: "Margin-orders", icon: <MonitorCheck size={20} /> },
+  { name: "Transactions", icon: <ArrowRightLeft size={20} /> },
+  { name: "Wallet", icon: <Wallet size={20} />, highlight: true },
 ];
 
 const others = [
-  { name: "Notification", icon: <Bell size={18}/> },
-  { name: "Settings", icon: <Settings size={18}/> },
-  { name: "Logout", icon: <LogOut size={18}/> },  // Logout item
-  { name: "Help", icon: <AlertCircle size={18}/> },
+  { name: "Notification", icon: <Bell size={20} /> },
+  { name: "Settings", icon: <Settings size={20} /> },
+  { name: "Logout", icon: <LogOut size={20} /> },
+  { name: "Help", icon: <AlertCircle size={20} /> },
 ];
 
-const Sidebar = ({ darkMode, toggleDarkMode }: any) => {
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("Wallet");  // Default selected item
+const Sidebar = ({ darkMode, toggleDarkMode, active, setActive }: any) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  // Set active item based on location (for routes like "/dashboard", "/customers", etc.)
+  // Set active item based on location
   useEffect(() => {
-    // Handle the default selection logic for the dashboard
-    if (location.pathname === "/dashboard") {
-      setActive("Wallet");
-    } else {
-      // You can modify this logic to handle other routes as needed
-      setActive(location.pathname.split("/")[1].charAt(0).toUpperCase() + location.pathname.split("/")[1].slice(1) || "Wallet");
-    }
-  }, [location]);
+    // Only update active state if it doesn't match current route
+    const currentPath = location.pathname;
 
-  // Handle early return to hide the sidebar on login or register pages
+    if (currentPath === "/dashboard") {
+      if (active !== "Wallet") setActive("Wallet");
+    } else {
+      const pathSegment = currentPath.split("/")[1] || "";
+      const formattedPath = pathSegment
+        ? pathSegment.charAt(0).toUpperCase() + pathSegment.slice(1)
+        : "Wallet";
+      const cleanedPath = formattedPath.replace(/%20/g, "-");
+
+      console.log(formattedPath);
+      console.log(cleanedPath);
+
+      if (active !== cleanedPath) setActive(cleanedPath);
+    }
+  }, [active, location.pathname, setActive]); // Only depend on pathname
+
+  // Hide sidebar on login or register pages
   if (location.pathname === "/login" || location.pathname === "/register") {
-    return null; // Don't render the sidebar if on login/register pages
+    return null;
   }
 
   const renderItems = (items: any[]) => (
     <ul className="space-y-4">
-      {items.map(({ name, icon }: any) => (
+      {items.map(({ name, icon }) => (
         <li
           key={name}
           onClick={() => {
             setActive(name);
-            setOpen(false);
+            setMobileMenuOpen(false);
           }}
-          className={`py-1 w-[15vw] cursor-pointer rounded transition ${
+          className={`py-2 px-3 cursor-pointer rounded transition flex items-center ${
             active === name ? "text-yellow-400" : "text-gray-300"
           } hover:bg-gray-700`}
         >
           {name === "Logout" ? (
-            // Wrap the LogOutButton in the same styled structure
-            <div className="flex gap-5">
-              <span className="text-xs">{icon}</span>
-              <LogoutButton /> {/* Ensure your LogOutButton inherits the same style */}
+            <div className="flex items-center w-full">
+              <span className="flex-shrink-0">{icon}</span>
+              <span className="ml-4  text-sm">
+                <LogoutButton />
+              </span>
             </div>
           ) : (
-            <Link to={name === "Wallet" ? "/dashboard" : `/${name.toLowerCase()}`} className="flex gap-5">
-              <span className="text-xs">{icon}</span>
-              <span className="hidden md:inline text-xs">{name}</span>
+            <Link
+              to={name === "Wallet" ? "/dashboard" : `/${name.toLowerCase()}`}
+              className="flex items-center w-full"
+            >
+              <span className="flex-shrink-0">{icon}</span>
+              <span className="ml-4 text-sm">{name}</span>
             </Link>
           )}
         </li>
@@ -87,52 +101,90 @@ const Sidebar = ({ darkMode, toggleDarkMode }: any) => {
   return (
     <>
       {/* Mobile Menu Toggle */}
-      <div className="md:hidden flex items-center p-4">
-        <button onClick={() => setOpen(!open)} className="text-white text-2xl">
-          {open ? <X /> : <Menu />}
+      <div className="md:hidden fixed top-4 left-4 z-50">
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="text-white bg-gray-800 rounded-md p-2"
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
+      {/* Mobile Sidebar Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
-        className={`${
-          open ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 fixed z-50 md:static top-0 left-0 h-full w-64 bg-[#0D120E] text-white transition-transform duration-300 ease-in-out flex flex-col justify-between`}
+        className={`
+          fixed md:static top-0 left-0 h-full 
+          w-64
+          bg-[#0D120E] text-white 
+          transform transition-transform duration-300 ease-in-out
+          z-40
+          flex flex-col justify-between
+          ${
+            mobileMenuOpen
+              ? "translate-x-0"
+              : "-translate-x-full md:translate-x-0"
+          }
+        `}
       >
-        <div className="space-y-6 ">
-          <div className="font-bold text-lg border-b-[1px] border-b-gray-500 p-6 text-white"><span className=" text-sm px-2 py-[6px]  rounded-full text-black bg-[#F8D802]">B.</span> BEAM</div>
+        <div className="space-y-6 overflow-y-auto scrollbar-hide">
+          {/* Logo */}
+          <div className="font-bold text-lg border-b border-gray-500 p-6 text-white flex items-center">
+            <span className="text-sm px-2 py-1 rounded-full text-black bg-[#F8D802]">
+              B.
+            </span>
+            <span className="ml-2">BEAM</span>
+          </div>
 
-          <div className="pb-4 mx-9">
-            <p className="text-xs text-white pt-8 mb-4">MAIN</p>
+          {/* Main Navigation */}
+          <div className="px-6">
+            <p className="text-xs text-white pt-4 mb-4">MAIN</p>
             {renderItems(navItems)}
           </div>
 
-          <div className="pb-4 mx-9">
-            <p className="text-xs text-white border-t-[1px] border-t-gray-500 pt-12  mb-4">OTHERS</p>
+          {/* Other Navigation */}
+          <div className="px-6">
+            <p className="text-xs text-white border-t border-gray-500 pt-6 mb-4">
+              OTHERS
+            </p>
             {renderItems(others)}
           </div>
         </div>
 
         {/* Dark Mode Toggle */}
-        <div className="p-4 flex items-center justify-between text-xs text-white">
-          <span className="flex items-center gap-2">
-            {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            {darkMode ? "Switch to light mode" : "Switch to dark mode"}
-          </span>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={darkMode}
-              onChange={toggleDarkMode}
-            />
-            <div className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-yellow-500 transition-colors duration-300">
-              <div
-                className={`absolute top-0.5 ${
-                  darkMode ? "right-0.5" : "left-0.5"
-                } w-5 h-5 bg-white rounded-full peer-checked:translate-x-5 transform transition-transform duration-300`}></div>
-            </div>
-          </label>
+        <div className="p-4 border-t border-gray-700">
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-2">
+              {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+              <span className="text-xs">
+                {darkMode ? "Light mode" : "Dark mode"}
+              </span>
+            </span>
+
+            {/* Toggle */}
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={darkMode}
+                onChange={toggleDarkMode}
+              />
+              <div className="w-9 h-5 bg-gray-600 rounded-full peer-checked:bg-yellow-500 transition-colors duration-300">
+                <div
+                  className={`absolute top-0.5 ${
+                    darkMode ? "right-0.5" : "left-0.5"
+                  } w-4 h-4 bg-white rounded-full transform transition-transform duration-300`}
+                />
+              </div>
+            </label>
+          </div>
         </div>
       </aside>
     </>

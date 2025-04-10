@@ -55,11 +55,11 @@ const AppRoutes: React.FC = () => {
         <Route path="/customers" element={<ComingSoon darkMode={darkMode} />} />
         <Route path="/overview" element={<ComingSoon darkMode={darkMode} />} />
         <Route
-          path="/spot orders"
+          path="/spot-orders"
           element={<ComingSoon darkMode={darkMode} />}
         />
         <Route
-          path="/margin orders"
+          path="/margin-orders"
           element={<ComingSoon darkMode={darkMode} />}
         />
         <Route

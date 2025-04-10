@@ -6,6 +6,7 @@ import mastercardIcon from "../../assets/mastercard.svg"; // placeholder
 import visaIcon from "../../assets/visa.svg";
 import verveIcon from "../../assets/verve.svg";
 import { useNavigate } from "react-router-dom";
+import { Building, CreditCard } from "lucide-react";
 
 const cardIcons: Record<string, string> = {
   mastercard: mastercardIcon,
@@ -101,9 +102,9 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                       type="radio"
                       name="paymentMethod"
                       value="card"
-                      className="accent-yellow-500"
+                      className="accent-[#F8D802]"
                     />
-                    <span>💳 Add Debit/Credit Card</span>
+                    <span className="flex gap-x-3"><CreditCard size={16}/> Add Debit/Credit Card</span>
                   </label>
 
                   <label className="flex items-center space-x-2 p-2 border rounded cursor-pointer hover:bg-gray-50">
@@ -111,9 +112,9 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                       type="radio"
                       name="paymentMethod"
                       value="bank"
-                      className="accent-yellow-500"
+                      className="accent-[#F8D802]"
                     />
-                    <span>🏦 Bank Transfer</span>
+                    <span className="flex gap-x-3"><Building size={16}/> Bank Transfer</span>
                   </label>
                 </div>
                 <ErrorMessage
@@ -125,7 +126,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
 
               <button
                 type="submit"
-                className="bg-yellow-400 w-full py-2 rounded"
+                className="bg-[#F8D802] w-full py-2 rounded"
               >
                 Continue
               </button>
