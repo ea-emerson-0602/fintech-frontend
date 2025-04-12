@@ -138,7 +138,7 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
     if (email) {
       loadData();
     } else {
-      setError("No email found - please login");
+      // setError("No email found - please login");
       setLoading(false);
     }
   }, [email, fetchBalance, fetchTransactions]);
