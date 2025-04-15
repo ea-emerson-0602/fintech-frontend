@@ -34,6 +34,7 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [, setStatus] = useState("");
+
   const navigate = useNavigate();
 
   const pendingAmount = 0;
