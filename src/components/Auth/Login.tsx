@@ -20,21 +20,6 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [, setStatus] = useState("");
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await axiosInstance.get("/user", {
-          withCredentials: true, // 👈 important to send the cookie
-        });
-      } catch (err) {
-        // Not authenticated? Redirect to login
-        navigate("/dashboard");
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
-
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email format")

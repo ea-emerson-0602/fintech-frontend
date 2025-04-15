@@ -59,21 +59,6 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
       });
   };
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await axiosInstance.get("/user", {
-          withCredentials: true, // 👈 important to send the cookie
-        });
-      } catch (err) {
-        // Not authenticated? Redirect to login
-        navigate("/login");
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
-
   const fetchUser = useCallback(async () => {
     try {
       const { data } = await axiosInstance.get("/user");
