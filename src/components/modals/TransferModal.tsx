@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 interface TransferValues {
   amount: number;
-  email: string;
+  recipientEmail: string; // Change email to recipientEmail
   description?: string;
 }
 
@@ -19,7 +19,7 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const initialValues: TransferValues = {
     amount: 0,
-    email: "",
+    recipientEmail: "", // Change email to recipientEmail
     description: "",
   };
 
@@ -29,7 +29,7 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
     amount: Yup.number()
       .positive("Amount must be positive")
       .required("Amount is required"),
-    email: Yup.string()
+    recipientEmail: Yup.string() // Change email to recipientEmail
       .email("Invalid email address")
       .required("Recipient email is required"),
   });
@@ -120,17 +120,20 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
               </div>
 
               <div>
-                <label htmlFor="email" className="block font-medium mb-1">
+                <label
+                  htmlFor="recipientEmail"
+                  className="block font-medium mb-1"
+                >
                   Recipient Email
                 </label>
                 <Field
                   type="email"
-                  name="email"
+                  name="recipientEmail" // Change email to recipientEmail
                   className="w-full p-2 border border-gray-300 rounded"
                   placeholder="Enter recipient email"
                 />
                 <ErrorMessage
-                  name="email"
+                  name="recipientEmail" // Change email to recipientEmail
                   component="div"
                   className="text-red-500 text-sm mt-1"
                 />

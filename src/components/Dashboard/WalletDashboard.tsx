@@ -31,14 +31,13 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
   const [showModal, setShowModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [, setStatus] = useState("");
   const navigate = useNavigate();
 
   const pendingAmount = 0;
   const bankInfo = "Wema Bank 010 210 2020";
-
-  const email = localStorage.getItem("email");
-  const user = localStorage.getItem("user");
 
   const [copied, setCopied] = useState(false);
 
@@ -73,6 +72,21 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
 
     checkAuth();
   }, [navigate]);
+
+  const fetchUser = useCallback(async () => {
+    try {
+      const { data } = await axiosInstance.get("/user");
+      setUser(data.name);
+      setEmail(data.email);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        setStatus(error.response.data?.message || "Login failed");
+      } else {
+        setStatus("Login failed");
+      }
+    }
+  }, []);
+  fetchUser();
 
   const fetchBalance = useCallback(async () => {
     try {
@@ -123,7 +137,7 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
     if (email) {
       loadData();
     } else {
-      setError("No email found - please login");
+      // setError("No email found - please login");
       setLoading(false);
     }
   }, [email, fetchBalance, fetchTransactions]);

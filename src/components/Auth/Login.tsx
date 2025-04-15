@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axiosInstance from "../../api/axiosInstance";
@@ -19,6 +19,21 @@ const Login: React.FC = () => {
   const initialValues: LoginValues = { email: "", password: "" };
   const [showPassword, setShowPassword] = useState(false);
   const [, setStatus] = useState("");
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await axiosInstance.get("/user", {
+          withCredentials: true, // 👈 important to send the cookie
+        });
+      } catch (err) {
+        // Not authenticated? Redirect to login
+        navigate("/dashboard");
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -67,8 +82,8 @@ const Login: React.FC = () => {
                   <div className="text-red-500 text-sm mt-1">
                     {(errors as any).general}
                   </div>
-                  
                 )}
+                -
                 <div className="lg:mb-8 mb-4">
                   <label
                     htmlFor="email"
@@ -88,7 +103,6 @@ const Login: React.FC = () => {
                     className="text-red-500 text-sm  "
                   />
                 </div>
-
                 <div className="lg:mb-8 mb-4">
                   <label
                     htmlFor="password"
@@ -116,7 +130,6 @@ const Login: React.FC = () => {
                     className="text-red-500 text-sm"
                   />
                 </div>
-
                 <div className="flex mt-3 text-xs mb-6 text-gray-700  justify-between w-full">
                   <div className="flex justify-between w-full">
                     <p className="">
@@ -133,13 +146,11 @@ const Login: React.FC = () => {
                     </label>
                   </div>
                 </div>
-
                 <ErrorMessage
                   name="terms"
                   component="div"
                   className="text-red-500 text-sm"
                 />
-
                 <button
                   type="submit"
                   disabled={isSubmitting}

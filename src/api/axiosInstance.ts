@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 // axiosInstance.js
 
@@ -8,9 +8,8 @@ const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
   withCredentials: true, // ✅ important for sending/receiving cookies
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
-
 
 export default axiosInstance;

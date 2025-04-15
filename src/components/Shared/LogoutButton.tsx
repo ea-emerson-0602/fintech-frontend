@@ -8,7 +8,7 @@ const LogoutButton: React.FC = () => {
 
   const handleLogout = async () => {
     
-    const response = await axiosInstance.post("/logout");// Adjust the key as per your implementation
+   await axiosInstance.post("/logout");// Adjust the key as per your implementation
     // Redirect the user to the login page or home page
     navigate('/login');
   };

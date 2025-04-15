@@ -10,6 +10,8 @@ import Sidebar from "./components/Shared/Sidebar";
 import ComingSoon from "./components/Shared/ComingSoon";
 import "./index.css";
 import "./App.css";
+import ProtectedRoute from "./ProtectedRoute";
+import AuthRedirect from "./AuthRedirect";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
@@ -41,39 +43,68 @@ const AppRoutes: React.FC = () => {
   return (
     <Layout>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* Public routes */}
         <Route
-          path="/dashboard"
-          element={<WalletDashboard darkMode={darkMode} />}
+          path="/login"
+          element={
+            <AuthRedirect>
+              <Login />
+            </AuthRedirect>
+          }
         />
-        <Route path="/wallet/fund" element={<FundWallet />} />
-        <Route path="/wallet/transfer" element={<Transfer />} />
-        <Route path="/wallet/withdraw" element={<Withdrawal />} />
+        <Route
+          path="/register"
+          element={
+            <AuthRedirect>
+              <Register />
+            </AuthRedirect>
+          }
+        />
 
-        {/* Any non-wallet item shows Coming Soon */}
-        <Route path="/customers" element={<ComingSoon darkMode={darkMode} />} />
-        <Route path="/overview" element={<ComingSoon darkMode={darkMode} />} />
-        <Route
-          path="/spot-orders"
-          element={<ComingSoon darkMode={darkMode} />}
-        />
-        <Route
-          path="/margin-orders"
-          element={<ComingSoon darkMode={darkMode} />}
-        />
-        <Route
-          path="/transactions"
-          element={<ComingSoon darkMode={darkMode} />}
-        />
-        <Route
-          path="/notification"
-          element={<ComingSoon darkMode={darkMode} />}
-        />
-        <Route path="/settings" element={<ComingSoon darkMode={darkMode} />} />
-        <Route path="/logout" element={<ComingSoon darkMode={darkMode} />} />
-        <Route path="/help" element={<ComingSoon darkMode={darkMode} />} />
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/dashboard"
+            element={<WalletDashboard darkMode={darkMode} />}
+          />
+          <Route path="/wallet/fund" element={<FundWallet />} />
+          <Route path="/wallet/transfer" element={<Transfer />} />
+          <Route path="/wallet/withdraw" element={<Withdrawal />} />
 
+          {/* Coming soon pages */}
+          <Route
+            path="/customers"
+            element={<ComingSoon darkMode={darkMode} />}
+          />
+          <Route
+            path="/overview"
+            element={<ComingSoon darkMode={darkMode} />}
+          />
+          <Route
+            path="/spot-orders"
+            element={<ComingSoon darkMode={darkMode} />}
+          />
+          <Route
+            path="/margin-orders"
+            element={<ComingSoon darkMode={darkMode} />}
+          />
+          <Route
+            path="/transactions"
+            element={<ComingSoon darkMode={darkMode} />}
+          />
+          <Route
+            path="/notification"
+            element={<ComingSoon darkMode={darkMode} />}
+          />
+          <Route
+            path="/settings"
+            element={<ComingSoon darkMode={darkMode} />}
+          />
+          <Route path="/logout" element={<ComingSoon darkMode={darkMode} />} />
+          <Route path="/help" element={<ComingSoon darkMode={darkMode} />} />
+        </Route>
+
+        {/* Fallback */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Layout>
