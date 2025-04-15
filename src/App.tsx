@@ -11,7 +11,6 @@ import ComingSoon from "./components/Shared/ComingSoon";
 import "./index.css";
 import "./App.css";
 import ProtectedRoute from "./ProtectedRoute";
-import AuthRedirect from "./AuthRedirect";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
@@ -44,22 +43,8 @@ const AppRoutes: React.FC = () => {
     <Layout>
       <Routes>
         {/* Public routes */}
-        <Route
-          path="/login"
-          element={
-            <AuthRedirect>
-              <Login />
-            </AuthRedirect>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <AuthRedirect>
-              <Register />
-            </AuthRedirect>
-          }
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
