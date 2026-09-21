@@ -9,7 +9,6 @@ import { Copy, Wallet, Clock, School, ChevronDown } from "lucide-react";
 import Navbar from "../Shared/Navbar";
 import TransferModal from "../modals/TransferModal";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 interface Transaction {
   id: string;
@@ -34,8 +33,6 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [, setStatus] = useState("");
-
-  const navigate = useNavigate();
 
   const pendingAmount = 0;
   const bankInfo = "Wema Bank 010 210 2020";
