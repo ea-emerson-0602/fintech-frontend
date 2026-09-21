@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "./api/axiosInstance";
+import LoadingSpinner from "./components/Shared/LoadingSpinner";
 
 const ProtectedRoute = () => {
   const [isAuth, setIsAuth] = useState<boolean | null>(null);
@@ -22,7 +23,13 @@ const ProtectedRoute = () => {
     checkAuth();
   }, []);
 
-  if (isAuth === null) return <div>Loading...</div>;
+  if (isAuth === null) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return isAuth ? <Outlet /> : <Navigate to="/login" />;
 };

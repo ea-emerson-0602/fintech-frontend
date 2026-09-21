@@ -21,7 +21,7 @@ const AppRoutes: React.FC = () => {
   const authPages = ["/login", "/register"];
   const isAuthPage = authPages.includes(location.pathname);
 
-  const Layout = ({ children }: { children: React.ReactNode }) => (
+  return (
     <div
       className={`flex min-h-screen ${
         darkMode ? "bg-black text-white" : "bg-white text-black"
@@ -35,12 +35,7 @@ const AppRoutes: React.FC = () => {
           toggleDarkMode={() => setDarkMode(!darkMode)}
         />
       )}
-      <main className="flex-1">{children}</main>
-    </div>
-  );
-
-  return (
-    <Layout>
+      <main className="flex-1">
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
@@ -82,6 +77,10 @@ const AppRoutes: React.FC = () => {
             element={<ComingSoon darkMode={darkMode} />}
           />
           <Route
+            path="/notifications"
+            element={<ComingSoon darkMode={darkMode} />}
+          />
+          <Route
             path="/settings"
             element={<ComingSoon darkMode={darkMode} />}
           />
@@ -92,7 +91,8 @@ const AppRoutes: React.FC = () => {
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
-    </Layout>
+      </main>
+    </div>
   );
 };
 

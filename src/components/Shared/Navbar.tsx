@@ -129,7 +129,11 @@ const Navbar = ({ user, darkMode }: any) => {
 
         {/* Notifications */}
         <div className="relative my-auto">
-          <Link to="/notifications" className="text-gray-600">
+          <Link
+            to="/notification"
+            className="text-gray-600"
+            aria-label="Notifications"
+          >
             <Bell size={20} className="fill-gray-400 text-gray-400" />
             <span className="absolute top-0 right-0 bg-red-500 border-[1px] text-white text-xs rounded-full w-2 h-2 flex items-center justify-center"></span>
           </Link>
