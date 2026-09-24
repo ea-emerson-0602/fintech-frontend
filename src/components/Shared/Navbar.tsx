@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Bell, ChevronDown, ChevronUp } from "lucide-react";
 
-const Navbar = ({ user, darkMode }: any) => {
+const Navbar = ({ user }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   // const dropdownRef = useRef(null);
@@ -41,9 +41,7 @@ const Navbar = ({ user, darkMode }: any) => {
 
   return (
     <div
-      className={`flex justify-between items-center px-4  ml-12 md:ml-6 lg:ml-0 md:px-12 py-4 lg:border-b-2 ${
-        darkMode ? "bg-black text-white" : "bg-white text-black"
-      }`}
+      className="flex justify-between items-center px-4  ml-12 md:ml-6 lg:ml-0 md:px-12 py-4 lg:border-b-2 bg-white text-gray-900 border-gray-200 dark:bg-zinc-950 dark:text-zinc-300 dark:border-zinc-800"
     >
       {/* Search Field */}
       <div className="flex items-center rounded-full bg-[#F5F4F2] border px-4 gap-2">
@@ -58,7 +56,7 @@ const Navbar = ({ user, darkMode }: any) => {
           <div className="fixed inset-0 bg-gray-800 opacity-50 z-10" />
         )}
         {isModalOpen && (
-          <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-white p-4 rounded-lg shadow-lg z-20">
+          <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-white text-gray-900 p-4 rounded-lg shadow-lg z-20 dark:bg-zinc-900 dark:text-zinc-300">
             <h2 className="text-lg">Search functionality coming soon!</h2>
             <button
               onClick={handleCloseModal}
@@ -77,7 +75,7 @@ const Navbar = ({ user, darkMode }: any) => {
             className="flex gap-2 items-center cursor-pointer"
             onClick={toggleDropdown}
           >
-            <div className="text-lg font-bold px-3 py-1 rounded-full bg-[#F8D802]">
+            <div className="rounded-full bg-[#F8D802] px-3 py-1 text-lg font-bold text-gray-900">
               {user?.charAt(0)}
             </div>
             <div className="items-center hidden md:flex gap-2">
@@ -99,26 +97,26 @@ const Navbar = ({ user, darkMode }: any) => {
 
           {/* Dropdown menu */}
           <div
-            className={`absolute right-0 mt-2 w-48 bg-white dark:bg-gray-500 text-white
+            className={`absolute right-0 mt-2 w-48 bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-300
                rounded-md shadow-lg z-10 
               transition-all duration-300 ease-in-out origin-top-right overflow-hidden
               ${dropdownOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}
           >
-            <div className="p-3 text-sm border-b dark:border-gray-700">
+            <div className="p-3 text-sm border-b border-gray-200 dark:border-zinc-700">
               <p className="font-semibold">{user}</p>
-              <p className="text-gray-500 text-xs mt-1">User Account</p>
+              <p className="text-gray-500 dark:text-gray-300 text-xs mt-1">User Account</p>
             </div>
             <div className="py-1">
               <Link
                 to="/settings"
-                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-700"
                 onClick={() => setDropdownOpen(false)}
               >
                 Account Settings
               </Link>
               <Link
                 to="/login"
-                className="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-zinc-700"
                 onClick={() => setDropdownOpen(false)}
               >
                 Sign out
@@ -131,10 +129,10 @@ const Navbar = ({ user, darkMode }: any) => {
         <div className="relative my-auto">
           <Link
             to="/notification"
-            className="text-gray-600"
+            className="text-gray-600 dark:text-gray-300"
             aria-label="Notifications"
           >
-            <Bell size={20} className="fill-gray-400 text-gray-400" />
+            <Bell size={20} className="fill-gray-400 text-gray-400 dark:fill-gray-300 dark:text-gray-300" />
             <span className="absolute top-0 right-0 bg-red-500 border-[1px] text-white text-xs rounded-full w-2 h-2 flex items-center justify-center"></span>
           </Link>
         </div>

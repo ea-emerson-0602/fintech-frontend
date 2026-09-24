@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useTheme } from "./context/ThemeContext";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import WalletDashboard from "./components/Dashboard/WalletDashboard";
@@ -15,24 +16,20 @@ import ProtectedRoute from "./ProtectedRoute";
 const AppRoutes: React.FC = () => {
   const location = useLocation();
   const [active, setActive] = useState("Wallet");
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode, toggleDarkMode } = useTheme();
 
   // Pages that should NOT show sidebar
   const authPages = ["/login", "/register"];
   const isAuthPage = authPages.includes(location.pathname);
 
   return (
-    <div
-      className={`flex min-h-screen ${
-        darkMode ? "bg-black text-white" : "bg-white text-black"
-      }`}
-    >
+    <div className="flex min-h-screen bg-white text-gray-900 dark:bg-zinc-950 dark:text-zinc-300">
       {!isAuthPage && (
         <Sidebar
           active={active}
           setActive={setActive}
           darkMode={darkMode}
-          toggleDarkMode={() => setDarkMode(!darkMode)}
+          toggleDarkMode={toggleDarkMode}
         />
       )}
       <main className="flex-1">

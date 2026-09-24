@@ -19,10 +19,10 @@ interface Transaction {
 }
 
 interface Props {
-  darkMode: boolean;
+  darkMode?: boolean;
 }
 
-const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
+const WalletDashboard: React.FC<Props> = () => {
   const [balance, setBalance] = useState<number>(0);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -125,39 +125,39 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
     }
   }, [email, fetchBalance, fetchTransactions]);
 
+  const handleTransactionSuccess = useCallback(async () => {
+    await Promise.all([fetchBalance(), fetchTransactions()]);
+  }, [fetchBalance, fetchTransactions]);
+
   if (loading) {
     return <LoadingSpinner />;
   }
   return (
     <div className="flex flex-col">
-      <Navbar user={user} darkMode={darkMode} />
-      <h2 className="text-3xl mx-4 md:mx-12 py-6 md:py-8 border-t-2 md:border-t-0 border-b-2 font-bold">
+      <Navbar user={user} />
+      <h2 className="text-3xl mx-4 md:mx-12 py-6 md:py-8 border-t-2 md:border-t-0 border-b-2 font-bold text-gray-900 border-gray-200 dark:text-zinc-300 dark:border-zinc-800">
         Wallet
       </h2>
-      <div
-        className={`p-4 md:p-12 flex flex-col md:flex-row w-screen lg:w-full ${
-          darkMode ? "bg-black text-white" : "bg-white text-black"
-        }`}
-      >
+      <div className="p-4 md:p-12 flex flex-col md:flex-row w-screen lg:w-full bg-white text-gray-900 dark:bg-zinc-950 dark:text-zinc-300">
         {/* Wallet Balance Section - Full width on mobile, 1/3 width on desktop */}
         <div className="w-full md:w-1/3 text-xs mb-8 md:mb-0">
           {error && <p className="error">{error}</p>}
-          <div className="bg-[#F8F8F6]">
+          <div className="bg-[#F8F8F6] dark:bg-zinc-900">
             {/* Actual Balance */}
             <div className="px-6">
-              <div className="flex justify-between py-6 text-gray-600 items-center">
+              <div className="flex justify-between py-6 text-gray-600 dark:text-gray-300 items-center">
                 <span>Actual Balance</span>
                 <Wallet size={16} />
               </div>
-              <h2 className="text-3xl text-black py-6 border-y-[1px] m-0 leading-none font-bold">
+              <h2 className="text-3xl text-gray-900 dark:text-zinc-300 py-6 border-y-[1px] border-gray-200 dark:border-zinc-700 m-0 leading-none font-bold">
                 ₦{balance}
-                <span className="text-gray-600 text-2xl">.00</span>
+                <span className="text-gray-600 dark:text-gray-300 text-2xl">.00</span>
               </h2>
             </div>
 
             {/* Bank Info */}
             <div className="p-6">
-              <div className="flex justify-between text-gray-700 items-center">
+              <div className="flex justify-between text-gray-700 dark:text-gray-200 items-center">
                 <div className="flex items-center gap-2">
                   <School size={16} />
                   <span>{bankInfo}</span>
@@ -190,14 +190,14 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
             </div>
 
             {/* Pending Amount */}
-            <div className="border-t border-dashed p-6 text-gray-600">
-              <div className="flex justify-between border-b pb-6 items-center">
+            <div className="border-t border-dashed p-6 text-gray-600 dark:text-gray-300 dark:border-zinc-700">
+              <div className="flex justify-between border-b pb-6 items-center dark:border-zinc-700">
                 <span>Pending Amount</span>
                 <Clock size={16} />
               </div>
-              <h2 className="text-xl font-bold py-6 text-black">
+              <h2 className="text-xl font-bold py-6 text-gray-900 dark:text-zinc-300">
                 ₦{pendingAmount}
-                <span className="text-gray-600 text-lg">.00</span>
+                <span className="text-gray-600 dark:text-gray-300 text-lg">.00</span>
               </h2>
             </div>
           </div>
@@ -206,44 +206,55 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
           <div className="grid mt-2 grid-cols-2 gap-3">
             <button
               onClick={() => setShowModal(true)}
-              className="w-full py-2 bg-[#F9D900] hover:bg-yellow-500 font-semibold rounded"
+              className="w-full rounded bg-[#F9D900] py-2 font-semibold text-gray-900 hover:bg-yellow-500"
             >
               Add Funds
             </button>
-            {showModal && <FundWalletModal setShowModal={setShowModal} />}
+            {showModal && (
+              <FundWalletModal
+                setShowModal={setShowModal}
+                onSuccess={handleTransactionSuccess}
+              />
+            )}
 
             <button
               onClick={() => setShowWithdrawModal(true)}
-              className="w-full py-2 border border-gray-300 font-semibold rounded hover:bg-gray-300"
+              className="w-full py-2 border border-gray-300 font-semibold rounded hover:bg-gray-300 dark:border-zinc-600 dark:hover:bg-zinc-800"
             >
               Withdrawal
             </button>
             {showWithdrawModal && (
-              <WithdrawWallet setShowModal={setShowWithdrawModal} />
+              <WithdrawWallet
+                setShowModal={setShowWithdrawModal}
+                onSuccess={handleTransactionSuccess}
+              />
             )}
           </div>
 
           <div className="mt-2">
             <button
               onClick={() => setShowTransferModal(true)}
-              className="w-full py-2 border border-gray-300 font-semibold rounded hover:bg-gray-300"
+              className="w-full py-2 border border-gray-300 font-semibold rounded hover:bg-gray-300 dark:border-zinc-600 dark:hover:bg-zinc-800"
             >
               Transfer
             </button>
             {showTransferModal && (
-              <TransferModal setShowModal={setShowTransferModal} />
+              <TransferModal
+                setShowModal={setShowTransferModal}
+                onSuccess={handleTransactionSuccess}
+              />
             )}
           </div>
 
           {/* Other Buttons (Inactive) */}
           <div className="grid grid-cols-3 gap-2 mt-2 text-xs">
-            <button className="w-full py-1 px-0 border border-gray-300 text-gray-600 font-medium rounded cursor-not-allowed">
+            <button className="w-full py-1 px-0 border border-gray-300 text-gray-600 font-medium rounded cursor-not-allowed dark:border-zinc-600 dark:text-gray-300">
               PND Amount
             </button>
-            <button className="w-full py-1 border border-gray-300 text-gray-600 font-medium rounded cursor-not-allowed">
+            <button className="w-full py-1 border border-gray-300 text-gray-600 font-medium rounded cursor-not-allowed dark:border-zinc-600 dark:text-gray-300">
               Place Lien
             </button>
-            <button className="w-full py-2 px-1 border border-gray-300 text-gray-600 font-medium rounded cursor-not-allowed">
+            <button className="w-full py-2 px-1 border border-gray-300 text-gray-600 font-medium rounded cursor-not-allowed dark:border-zinc-600 dark:text-gray-300">
               Freeze Wallet
             </button>
           </div>
@@ -251,26 +262,26 @@ const WalletDashboard: React.FC<Props> = ({ darkMode }) => {
 
         {/* Transactions Section - Full width on mobile, 2/3 width on desktop */}
         <div className="w-full md:w-2/3 md:border-l md:ml-6 md:pl-6 mt-6 md:mt-0">
-          <h3 className="font-bold text-xl">Transaction History</h3>
+          <h3 className="font-bold text-xl text-gray-900 dark:text-zinc-300">Transaction History</h3>
           <div className="flex flex-col md:flex-row md:justify-between my-6 space-y-4 md:space-y-0">
             <div className="flex text-xs space-x-2 overflow-x-auto pb-2 md:pb-0">
-              <div className="py-[6px] px-4 rounded-md border text-gray-500 whitespace-nowrap">
+              <div className="py-[6px] px-4 rounded-md border text-gray-500 whitespace-nowrap dark:border-zinc-600 dark:text-gray-300">
                 3 years
               </div>
-              <div className="py-[6px] px-4 rounded-md border text-gray-500 whitespace-nowrap">
+              <div className="py-[6px] px-4 rounded-md border text-gray-500 whitespace-nowrap dark:border-zinc-600 dark:text-gray-300">
                 Approved
               </div>
-              <div className="py-[6px] px-4 rounded-md border text-gray-500 whitespace-nowrap">
+              <div className="py-[6px] px-4 rounded-md border text-gray-500 whitespace-nowrap dark:border-zinc-600 dark:text-gray-300">
                 Pending
               </div>
-              <div className="py-[6px] px-4 rounded-md border border-black whitespace-nowrap">
+              <div className="py-[6px] px-4 rounded-md border border-black whitespace-nowrap dark:border-white">
                 History
               </div>
             </div>
-            <div className="text-xs gap-x-2 flex text-gray-500">
+            <div className="text-xs gap-x-2 flex text-gray-500 dark:text-gray-300">
               <span className="my-auto">Filter by</span>
-              <div className="py-[6px] px-4 rounded-md border gap-x-4 flex">
-                Spot <ChevronDown className="text-black" size={14} />
+              <div className="py-[6px] px-4 rounded-md border gap-x-4 flex dark:border-zinc-600">
+                Spot <ChevronDown className="text-black dark:text-zinc-300" size={14} />
               </div>
             </div>
           </div>

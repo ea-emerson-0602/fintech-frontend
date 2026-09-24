@@ -12,9 +12,13 @@ interface WithdrawWalletValues {
 
 interface WithdrawWalletProps {
   setShowModal: (show: boolean) => void;
+  onSuccess?: () => Promise<void> | void;
 }
 
-const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
+const WithdrawWallet: React.FC<WithdrawWalletProps> = ({
+  setShowModal,
+  onSuccess,
+}) => {
   const navigate = useNavigate();
   const initialValues: WithdrawWalletValues = {
     amount: 0,
@@ -38,6 +42,7 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
     setIsLoading(true);
     try {
       await axiosInstance.post("/wallet/withdraw", values);
+      await onSuccess?.();
       setShowSuccess(true);
       setTimeout(() => {
         setShowModal(false);
@@ -54,8 +59,8 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl px-6 py-12 w-[95%] max-w-md relative">
-        <span className="absolute top-4 left-4 text-black text-2xl font-bold">
+      <div className="bg-white text-gray-900 rounded-xl px-6 py-12 w-[95%] max-w-md relative dark:bg-zinc-900 dark:text-zinc-300">
+        <span className="absolute top-4 left-4 text-gray-900 dark:text-zinc-200 text-2xl font-bold">
           Withdraw
         </span>
         <button
@@ -63,7 +68,7 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
             setStep(1);
             setShowModal(false);
           }}
-          className="absolute top-0 right-4 text-gray-500 hover:text-black text-2xl font-bold"
+          className="absolute top-0 right-4 text-gray-500 hover:text-black dark:text-zinc-400 dark:hover:text-zinc-200 text-2xl font-bold"
           disabled={isLoading}
         >
           &times;
@@ -71,7 +76,7 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
 
         {/* Success Alert Overlay */}
         {showSuccess && (
-          <div className="absolute inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center rounded-xl z-10">
+          <div className="absolute inset-0 bg-white bg-opacity-90 dark:bg-zinc-900 flex flex-col items-center justify-center rounded-xl z-10">
             <CheckCircle className="w-12 h-12 text-green-500 mb-4" />
             <h3 className="text-xl font-bold text-green-600">
               Withdrawal Successful!
@@ -94,7 +99,7 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
                 <Field
                   type="number"
                   name="amount"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                   disabled={isLoading}
                 />
                 <ErrorMessage
@@ -108,7 +113,7 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
                   Withdrawal Method
                 </label>
                 <div role="group" className="space-y-2">
-                  <label className="flex items-center space-x-2 p-2 border rounded cursor-pointer hover:bg-gray-50">
+                  <label className="flex items-center space-x-2 p-2 border rounded cursor-pointer hover:bg-gray-50 dark:border-zinc-600 dark:hover:bg-zinc-800">
                     <Field
                       type="radio"
                       name="paymentMethod"
@@ -136,7 +141,7 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({ setShowModal }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-2 bg-[#F9D900] hover:bg-yellow-500 font-semibold rounded disabled:opacity-70 flex items-center justify-center gap-2"
+                className="flex w-full items-center justify-center gap-2 rounded bg-[#F9D900] py-2 font-semibold text-gray-900 hover:bg-yellow-500 disabled:opacity-70"
               >
                 {isLoading ? (
                   <>

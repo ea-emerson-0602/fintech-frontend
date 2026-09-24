@@ -22,9 +22,13 @@ const detectCardType = (cardNumber: string) => {
 };
 interface FundWalletModalProps {
   setShowModal: (show: boolean) => void;
+  onSuccess?: () => Promise<void> | void;
 }
 
-const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
+const FundWalletModal: React.FC<FundWalletModalProps> = ({
+  setShowModal,
+  onSuccess,
+}) => {
     const navigate=useNavigate()
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -44,8 +48,9 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
         paymentMethod: formData.paymentMethod,
       };
       await axiosInstance.post("/wallet/fund", payload);
+      await onSuccess?.();
       setShowModal(false);
-      navigate("/dashboard")
+      navigate("/dashboard");
       alert("Wallet funded!");
     } catch (err) {
       alert("Funding failed");
@@ -54,8 +59,8 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl px-6 py-12 w-[95%] max-w-md relative">
-        <span className="absolute top-4 left-4 text-black text-2xl font-bold">
+      <div className="bg-white text-gray-900 rounded-xl px-6 py-12 w-[95%] max-w-md relative dark:bg-zinc-900 dark:text-zinc-300">
+        <span className="absolute top-4 left-4 text-gray-900 dark:text-zinc-200 text-2xl font-bold">
           Payment Option
         </span>
         <button
@@ -63,7 +68,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
             setStep(1); // reset to step 1 when closing, optional
             setShowModal(false);
           }}
-          className="absolute top-0 right-4 text-gray-500 hover:text-black text-2xl font-bold"
+          className="absolute top-0 right-4 text-gray-500 hover:text-black dark:text-zinc-400 dark:hover:text-zinc-200 text-2xl font-bold"
         >
           &times;
         </button>
@@ -86,7 +91,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                 <Field
                   name="amount"
                   type="number"
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                 />
                 <ErrorMessage
                   name="amount"
@@ -97,7 +102,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
               <div>
                 <label className="block font-medium mb-2">Payment Method</label>
                 <div role="group" className="space-y-2">
-                  <label className="flex items-center space-x-2 p-2 border rounded cursor-pointer hover:bg-gray-50">
+                  <label className="flex items-center space-x-2 p-2 border rounded cursor-pointer hover:bg-gray-50 dark:border-zinc-600 dark:hover:bg-zinc-800">
                     <Field
                       type="radio"
                       name="paymentMethod"
@@ -107,7 +112,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                     <span className="flex gap-x-3"><CreditCard size={16}/> Add Debit/Credit Card</span>
                   </label>
 
-                  <label className="flex items-center space-x-2 p-2 border rounded cursor-pointer hover:bg-gray-50">
+                  <label className="flex items-center space-x-2 p-2 border rounded cursor-pointer hover:bg-gray-50 dark:border-zinc-600 dark:hover:bg-zinc-800">
                     <Field
                       type="radio"
                       name="paymentMethod"
@@ -126,7 +131,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
 
               <button
                 type="submit"
-                className="bg-[#F8D802] w-full py-2 rounded"
+                className="w-full rounded bg-[#F8D802] py-2 font-semibold text-gray-900"
               >
                 Continue
               </button>
@@ -163,7 +168,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                     <Field
                       name="cardNumber"
                       type="text"
-                      className="w-full p-2 border rounded pr-12"
+                      className="w-full p-2 border rounded pr-12 bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                       maxLength={19}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const input = e.target.value
@@ -192,7 +197,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                     <Field
                       name="expiry"
                       type="text"
-                      className="w-full p-2 border rounded"
+                      className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                       maxLength={5}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const raw = e.target.value
@@ -216,7 +221,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                     <Field
                       name="cvv"
                       type="text"
-                      className="w-full p-2 border rounded"
+                      className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                       maxLength={3}
                     />
                     <ErrorMessage
@@ -227,7 +232,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                   </div>
                   <button
                     type="submit"
-                    className="bg-yellow-400 w-full py-2 rounded"
+                    className="w-full rounded bg-yellow-400 py-2 font-semibold text-gray-900"
                   >
                     Pay Now
                   </button>
@@ -258,7 +263,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                   name="accountNumber"
                   type="text"
                   maxLength={10}
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                 />
                 <ErrorMessage
                   name="accountNumber"
@@ -271,7 +276,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
                 <Field
                   name="bankName"
                   type="text"
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                 />
                 <ErrorMessage
                   name="bankName"
@@ -281,7 +286,7 @@ const FundWalletModal: React.FC<FundWalletModalProps> = ({ setShowModal }) => {
               </div>
               <button
                 type="submit"
-                className="bg-yellow-400 w-full py-2 rounded"
+                className="w-full rounded bg-yellow-400 py-2 font-semibold text-gray-900"
               >
                 Pay Now
               </button>

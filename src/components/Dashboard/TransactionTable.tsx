@@ -49,46 +49,46 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+        <thead className="bg-gray-50 dark:bg-zinc-800">
           <tr>
-            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider">
+            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider text-gray-700 dark:text-gray-200">
               Transaction ID
             </th>
-            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider">
+            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider text-gray-700 dark:text-gray-200">
               Transaction Type
             </th>
-            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider">
+            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider text-gray-700 dark:text-gray-200">
               Amount (₦)
             </th>
-            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider">
+            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider text-gray-700 dark:text-gray-200">
               Status
             </th>
-            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider">
+            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider text-gray-700 dark:text-gray-200">
               Date
             </th>
-            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider">
+            <th className="px-4 py-2 text-left text-[10px] font-bold  uppercase tracking-wider text-gray-700 dark:text-gray-200">
               Action
             </th>
           </tr>
         </thead>
-        <tbody className=" divide-y divide-gray-200">
+        <tbody className=" divide-y divide-gray-200 dark:divide-zinc-700">
           {paginatedTransactions.map((transaction) => (
             <tr key={transaction.id}>
-              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500 dark:text-gray-300">
                 TXN{transaction.id.substring(0, 5)}
               </td>
-              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500 dark:text-gray-300">
                 {transaction.type}
               </td>
-              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500 dark:text-gray-300">
                 ₦
                 {transaction.amount.toLocaleString("en-NG", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
               </td>
-              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500 dark:text-gray-300">
                 <div className="flex items-center">
                   <span
                     className={`inline-block h-2 w-2 bg-green-500 rounded-full mr-2
@@ -97,10 +97,10 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                   {getStatusDisplay(transaction.status)}
                 </div>
               </td>
-              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500 dark:text-gray-300">
                 {formatDate(transaction.timestamp)}
               </td>
-              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+              <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500 dark:text-gray-300">
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="border-[1px] my-auto rounded-md py-1  px-3"
@@ -115,11 +115,11 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-gray-900 dark:bg-zinc-800 dark:text-zinc-300">
             <p className="mb-4">Feature to view transactions is coming soon!</p>
             <button
               onClick={() => setIsModalOpen(false)}
-              className="px-4 py-2 bg-[#F9D900] hover:bg-yellow-500 text-white rounded"
+              className="rounded bg-[#F9D900] px-4 py-2 font-semibold text-gray-900 hover:bg-yellow-500"
             >
               Close
             </button>
@@ -128,7 +128,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
       )}
 
       <div className="flex justify-end items-center mt-4 px-6 py-3">
-        <span className="text-sm text-gray-700">
+        <span className="text-sm text-gray-700 dark:text-gray-300">
           Page {currentPage} of {totalPages === 0 ? 1 : totalPages}
         </span>
 
@@ -158,7 +158,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
       </div>
 
       {transactions.length === 0 && (
-        <div className="text-center py-4 text-gray-500">
+        <div className="text-center py-4 text-gray-500 dark:text-gray-300">
           No transactions found
         </div>
       )}

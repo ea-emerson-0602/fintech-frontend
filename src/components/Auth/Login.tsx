@@ -51,9 +51,11 @@ const Login: React.FC = () => {
   return (
     <AuthLayout title="Login">
       <div className="lg:min-h-screen h-screen flex items-center justify-center px-4">
-        <div className="bg-white lg:p-8 rounded-2xl w-full max-w-md">
-          <h2 className="text-2xl font-bold lg:mb-6">Sign in to Beam.</h2>
-          <p className="text-sm my-4 lg:my-6">
+        <div className="bg-white text-gray-900 lg:p-8 rounded-2xl w-full max-w-md dark:bg-zinc-900 dark:text-zinc-300">
+          <h2 className="text-2xl font-bold lg:mb-6 text-gray-900 dark:text-zinc-300">
+            Sign in to Beam.
+          </h2>
+          <p className="text-sm my-4 lg:my-6 text-gray-600 dark:text-gray-300">
             Please sign in with your assigned login details
           </p>
           <Formik
@@ -68,11 +70,10 @@ const Login: React.FC = () => {
                     {(errors as any).general}
                   </div>
                 )}
-                -
                 <div className="lg:mb-8 mb-4">
                   <label
                     htmlFor="email"
-                    className="block text-sm  font-medium text-gray-500"
+                    className="block text-sm  font-medium text-gray-500 dark:text-gray-300"
                   >
                     Email Address
                   </label>
@@ -80,7 +81,7 @@ const Login: React.FC = () => {
                     name="email"
                     type="email"
                     placeholder="you@example.com"
-                    className="w-full px-3 py-2 border text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 text-gray-900 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-600 dark:placeholder:text-gray-400 dark:focus:ring-yellow-400 dark:focus:bg-zinc-800"
                   />
                   <ErrorMessage
                     name="email"
@@ -91,7 +92,7 @@ const Login: React.FC = () => {
                 <div className="lg:mb-8 mb-4">
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-gray-500"
+                    className="block text-sm font-medium text-gray-500 dark:text-gray-300"
                   >
                     Password
                   </label>
@@ -99,11 +100,11 @@ const Login: React.FC = () => {
                     <Field
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      className="w-full px-3 py-2 border text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white"
+                      className="w-full px-3 py-2 border border-gray-300 text-gray-900 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-600 dark:placeholder:text-gray-400 dark:focus:ring-yellow-400 dark:focus:bg-zinc-800"
                     />
                     <button
                       type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300"
                       onClick={() => setShowPassword((prev) => !prev)}
                     >
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -115,13 +116,13 @@ const Login: React.FC = () => {
                     className="text-red-500 text-sm"
                   />
                 </div>
-                <div className="flex mt-3 text-xs mb-6 text-gray-700  justify-between w-full">
+                <div className="flex mt-3 text-xs mb-6 text-gray-700 dark:text-gray-300 justify-between w-full">
                   <div className="flex justify-between w-full">
                     <p className="">
                       Don&apos;t have an account?{" "}
                       <Link
                         to="/register"
-                        className="text-blue-600 hover:underline"
+                        className="text-blue-600 hover:underline dark:text-yellow-400"
                       >
                         Register
                       </Link>
@@ -139,10 +140,10 @@ const Login: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full py-2 text-white rounded-full transition ${
+                  className={`w-full py-2 rounded-full transition ${
                     values
-                      ? "bg-black hover:bg-gray-700"
-                      : "bg-gray-500 cursor-not-allowed"
+                      ? "bg-black text-white hover:bg-gray-700 dark:bg-[#F8D802] dark:text-gray-900 dark:hover:bg-yellow-400"
+                      : "bg-gray-500 text-white cursor-not-allowed"
                   }`}
                 >
                   {isSubmitting ? "Logging in..." : "Log in"}

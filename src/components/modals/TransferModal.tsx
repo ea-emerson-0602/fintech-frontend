@@ -12,9 +12,13 @@ interface TransferValues {
 
 interface TransferProps {
   setShowModal: (show: boolean) => void;
+  onSuccess?: () => Promise<void> | void;
 }
 
-const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
+const TransferModal: React.FC<TransferProps> = ({
+  setShowModal,
+  onSuccess,
+}) => {
   const navigate = useNavigate();
   const [showSuccess, setShowSuccess] = useState(false);
   const initialValues: TransferValues = {
@@ -40,7 +44,8 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
   ) => {
     try {
       await axiosInstance.post("/wallet/transfer", values);
-      setShowSuccess(true); // Show success notification
+      await onSuccess?.();
+      setShowSuccess(true);
 
       // Close modal after 2 seconds
       setTimeout(() => {
@@ -59,8 +64,8 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl px-6 py-12 w-[95%] max-w-md relative">
-        <span className="absolute top-4 left-4 text-black text-2xl font-bold">
+      <div className="bg-white text-gray-900 rounded-xl px-6 py-12 w-[95%] max-w-md relative dark:bg-zinc-900 dark:text-zinc-300">
+        <span className="absolute top-4 left-4 text-gray-900 dark:text-zinc-200 text-2xl font-bold">
           Transfer
         </span>
         <button
@@ -68,14 +73,14 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
             setStep(1);
             setShowModal(false);
           }}
-          className="absolute top-0 right-4 text-gray-500 hover:text-black text-2xl font-bold"
+          className="absolute top-0 right-4 text-gray-500 hover:text-black dark:text-zinc-400 dark:hover:text-zinc-200 text-2xl font-bold"
         >
           &times;
         </button>
 
         {/* Success Notification Popup */}
         {showSuccess && (
-          <div className="absolute inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center rounded-xl z-10">
+          <div className="absolute inset-0 bg-white bg-opacity-90 dark:bg-zinc-900 flex flex-col items-center justify-center rounded-xl z-10">
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
               Transfer successful!
             </div>
@@ -110,7 +115,7 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
                 <Field
                   type="number"
                   name="amount"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                 />
                 <ErrorMessage
                   name="amount"
@@ -129,7 +134,7 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
                 <Field
                   type="email"
                   name="recipientEmail" // Change email to recipientEmail
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                   placeholder="Enter recipient email"
                 />
                 <ErrorMessage
@@ -146,7 +151,7 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
                 <Field
                   as="textarea"
                   name="description"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-gray-900 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-600"
                   placeholder="Enter a description (optional)"
                   rows={3}
                 />
@@ -161,7 +166,7 @@ const TransferModal: React.FC<TransferProps> = ({ setShowModal }) => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-2 bg-[#F9D900] hover:bg-yellow-500 font-semibold rounded disabled:opacity-50"
+                className="w-full rounded bg-[#F9D900] py-2 font-semibold text-gray-900 hover:bg-yellow-500 disabled:opacity-50"
               >
                 {isSubmitting ? "Processing..." : "Transfer"}
               </button>

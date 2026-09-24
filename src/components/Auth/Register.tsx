@@ -64,11 +64,16 @@ const Register: React.FC = () => {
   return (
     <AuthLayout title="Register">
       <div className="lg:min-h-screen h-screen flex items-center justify-center px-4">
-        <div className="bg-white lg:p-8 rounded-2xl w-full max-w-md">
-          <h2 className="text-2xl font-bold lg:mb-6">Create an account</h2>
-          <p className="text-sm my-4 lg:my-6">
+        <div className="bg-white text-gray-900 lg:p-8 rounded-2xl w-full max-w-md dark:bg-zinc-900 dark:text-zinc-300">
+          <h2 className="text-2xl font-bold lg:mb-6 text-gray-900 dark:text-zinc-300">
+            Create an account
+          </h2>
+          <p className="text-sm my-4 lg:my-6 text-gray-600 dark:text-gray-300">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-600 hover:underline">
+            <Link
+              to="/login"
+              className="text-blue-600 hover:underline dark:text-yellow-400"
+            >
               Login
             </Link>
           </p>
@@ -88,7 +93,7 @@ const Register: React.FC = () => {
                 <div className="lg:mb-8 mb-4">
                   <label
                     htmlFor="fullName"
-                    className="block text-sm font-medium text-gray-500"
+                    className="block text-sm font-medium text-gray-500 dark:text-gray-300"
                   >
                     Full Name
                   </label>
@@ -96,7 +101,7 @@ const Register: React.FC = () => {
                     name="fullName"
                     type="text"
                     placeholder="John Doe"
-                    className="w-full mt-1 px-3 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-black dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-600 dark:placeholder:text-gray-400 dark:focus:ring-yellow-400"
                   />
                   <ErrorMessage
                     name="fullName"
@@ -108,7 +113,7 @@ const Register: React.FC = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-500"
+                    className="block text-sm font-medium text-gray-500 dark:text-gray-300"
                   >
                     Email Address
                   </label>
@@ -116,7 +121,7 @@ const Register: React.FC = () => {
                     name="email"
                     type="email"
                     placeholder="you@example.com"
-                    className="w-full mt-1 px-3 py-2 border text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full mt-1 px-3 py-2 border border-gray-300 text-gray-900 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-600 dark:placeholder:text-gray-400 dark:focus:ring-yellow-400"
                   />
                   <ErrorMessage
                     name="email"
@@ -128,7 +133,7 @@ const Register: React.FC = () => {
                 <div>
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-gray-500"
+                    className="block text-sm font-medium text-gray-500 dark:text-gray-300"
                   >
                     Password
                   </label>
@@ -136,11 +141,11 @@ const Register: React.FC = () => {
                     <Field
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      className="w-full mt-1 px-3 py-2 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-black pr-10"
+                      className="w-full mt-1 px-3 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black pr-10 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-600 dark:focus:ring-yellow-400"
                     />
                     <button
                       type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300"
                       onClick={() => setShowPassword((prev) => !prev)}
                     >
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -155,13 +160,13 @@ const Register: React.FC = () => {
 
                 <div className="flex items-start">
                   <Field type="checkbox" name="terms" className="mr-2" />
-                  <label htmlFor="terms" className="text-xs text-gray-700">
+                  <label htmlFor="terms" className="text-xs text-gray-700 dark:text-gray-300">
                     I agree to BeamMarkets{" "}
-                    <span className="text-blue-600 underline">
+                    <span className="text-blue-600 underline dark:text-yellow-400">
                       Terms of Service{" "}
                     </span>{" "}
                     and{" "}
-                    <span className="text-blue-600 underline">
+                    <span className="text-blue-600 underline dark:text-yellow-400">
                       Privacy Policy
                     </span>
                   </label>
@@ -175,10 +180,10 @@ const Register: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting || !values.terms}
-                  className={`w-full py-2 text-white rounded-full transition ${
+                  className={`w-full py-2 rounded-full transition ${
                     values.terms
-                      ? "bg-black hover:bg-gray-700"
-                      : "bg-gray-500 cursor-not-allowed"
+                      ? "bg-black text-white hover:bg-gray-700 dark:bg-[#F8D802] dark:text-gray-900 dark:hover:bg-yellow-400"
+                      : "bg-gray-500 text-white cursor-not-allowed"
                   }`}
                 >
                   {isSubmitting ? "Registering..." : "Register"}
@@ -187,21 +192,21 @@ const Register: React.FC = () => {
             )}
           </Formik>
 
-          <div className="relative text-center text-sm text-gray-500 my-4">
-            <span className="absolute w-full h-px bg-gray-200 top-1/2 left-0" />
-            <span className="relative bg-white px-4">OR SIGNIN WITH</span>
+          <div className="relative text-center text-sm text-gray-500 dark:text-gray-300 my-4">
+            <span className="absolute w-full h-px bg-gray-200 top-1/2 left-0 dark:bg-zinc-700" />
+            <span className="relative bg-white px-4 dark:bg-zinc-900">OR SIGNIN WITH</span>
           </div>
 
           <div className="flex w-full items-center justify-center gap-x-4 ">
             <button
               onClick={() => setShowModal(true)}
-              className="px-4 w-24 rounded-full py-2 border flex items-center justify-center gap-2 hover:bg-gray-50"
+              className="px-4 w-24 rounded-full py-2 border flex items-center justify-center gap-2 hover:bg-gray-50 dark:border-zinc-600 dark:hover:bg-zinc-800"
             >
               <img src={google} alt="Sign in with Google" className="w-5 h-5" />
             </button>
             <button
               onClick={() => setShowModal(true)}
-              className="w-24 py-2 px-4 rounded-full border flex items-center justify-center gap-2 hover:bg-gray-50"
+              className="w-24 py-2 px-4 rounded-full border flex items-center justify-center gap-2 hover:bg-gray-50 dark:border-zinc-600 dark:hover:bg-zinc-800"
             >
               <img src={apple} alt="Sign in with Apple" className="w-5 h-5" />
             </button>
@@ -211,11 +216,11 @@ const Register: React.FC = () => {
         {/* Modal */}
         {showModal && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-xl shadow-md text-center max-w-sm w-full">
+            <div className="bg-white p-6 rounded-xl shadow-md text-center max-w-sm w-full text-gray-900 dark:bg-zinc-800 dark:text-zinc-300">
               <p className="text-lg font-semibold mb-4">
                 Signup method unavailable
               </p>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
                 This signup option is currently not available. Please register
                 with your email instead.
               </p>

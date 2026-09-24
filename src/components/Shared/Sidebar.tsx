@@ -74,8 +74,10 @@ const Sidebar = ({ darkMode, toggleDarkMode, active, setActive }: any) => {
             setMobileMenuOpen(false);
           }}
           className={`py-2 px-3 cursor-pointer rounded transition flex items-center ${
-            active === name ? "text-yellow-400" : "text-gray-300"
-          } hover:bg-gray-700`}
+            active === name
+              ? "bg-yellow-50 text-yellow-700 dark:bg-zinc-800 dark:text-yellow-400"
+              : "text-gray-600 dark:text-zinc-300"
+          } hover:bg-gray-100 dark:hover:bg-zinc-800`}
         >
           {name === "Logout" ? (
             <div className="flex items-center w-full">
@@ -104,7 +106,7 @@ const Sidebar = ({ darkMode, toggleDarkMode, active, setActive }: any) => {
       <div className="md:hidden fixed top-4 left-4 z-50">
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="text-white bg-gray-800 rounded-md p-2"
+          className="rounded-md bg-gray-900 p-2 text-white dark:bg-zinc-800"
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -123,7 +125,8 @@ const Sidebar = ({ darkMode, toggleDarkMode, active, setActive }: any) => {
         className={`
           fixed md:static top-0 left-0 h-full 
           w-64
-          bg-[#0D120E] text-white 
+          border-r border-gray-200 bg-white text-gray-800
+          dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300
           transform transition-transform duration-300 ease-in-out
           z-40
           flex flex-col justify-between
@@ -136,8 +139,8 @@ const Sidebar = ({ darkMode, toggleDarkMode, active, setActive }: any) => {
       >
         <div className="space-y-6 overflow-y-auto scrollbar-hide">
           {/* Logo */}
-          <div className="font-bold text-lg border-b border-gray-500 p-6 text-white flex items-center">
-            <span className="text-sm px-2 py-1 rounded-full text-black bg-[#F8D802]">
+          <div className="flex items-center border-b border-gray-200 p-6 text-lg font-bold text-gray-900 dark:border-zinc-800 dark:text-zinc-200">
+            <span className="rounded-full bg-[#F8D802] px-2 py-1 text-sm text-gray-900">
               B.
             </span>
             <span className="ml-2">BEAM</span>
@@ -145,13 +148,13 @@ const Sidebar = ({ darkMode, toggleDarkMode, active, setActive }: any) => {
 
           {/* Main Navigation */}
           <div className="px-6">
-            <p className="text-xs text-white pt-4 mb-4">MAIN</p>
+            <p className="mb-4 pt-4 text-xs text-gray-500 dark:text-zinc-400">MAIN</p>
             {renderItems(navItems)}
           </div>
 
           {/* Other Navigation */}
           <div className="px-6">
-            <p className="text-xs text-white border-t border-gray-500 pt-6 mb-4">
+            <p className="mb-4 border-t border-gray-200 pt-6 text-xs text-gray-500 dark:border-zinc-800 dark:text-zinc-400">
               OTHERS
             </p>
             {renderItems(others)}
@@ -159,7 +162,7 @@ const Sidebar = ({ darkMode, toggleDarkMode, active, setActive }: any) => {
         </div>
 
         {/* Dark Mode Toggle */}
-        <div className="p-4 border-t border-gray-700">
+        <div className="border-t border-gray-200 p-4 dark:border-zinc-800">
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-2">
               {darkMode ? <Sun size={16} /> : <Moon size={16} />}
